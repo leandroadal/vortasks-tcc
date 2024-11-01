@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="custom_background">#0A163D</color>
+    <color name="custom_background_dark">#000000</color>
+	<color name="ic_launcher_background">#02183f</color>
+</resources>

@@ -1,0 +1,1 @@
+class SyncException implements Exception {}
