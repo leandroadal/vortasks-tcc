@@ -1,0 +1,4751 @@
+openapi: 3.0.1
+info:
+  title: Vortasks API
+  description: API para autenticação, backup de dados e para loja do aplicativo Vortasks
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/
+security:
+  - bearerAuth: []
+paths:
+  /user/progress:
+    get:
+      tags:
+        - progress-controller
+      summary: Buscar dados de progresso
+      description: Busca os dados de progresso do usuário
+      operationId: getProgress
+      responses:
+        '200':
+          description: Dados de progresso encontrados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDataResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Dados de progresso não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - progress-controller
+      summary: Atualizar dados de progresso
+      description: Atualiza os dados de progresso do usuário
+      operationId: updateProgress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressDataRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Dados de progresso atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDataResponseDTO'
+        '400':
+          description: Dados de progresso inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Dados de progresso não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - progress-controller
+      summary: Excluir dados de progresso
+      description: Exclui os dados de progresso do usuário
+      operationId: deleteProgress
+      responses:
+        '204':
+          description: Dados de progresso excluídos com sucesso
+          content:
+            '*/*':
+              schema:
+                type: object
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    patch:
+      tags:
+        - progress-controller
+      summary: Atualizar parcialmente dados de progresso
+      description: Atualiza parcialmente os dados de progresso do usuário
+      operationId: updatePartialProgress
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressDataRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Dados de progresso atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDataResponseDTO'
+        '400':
+          description: Dados de progresso inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Dados de progresso não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user/progress/{id}:
+    put:
+      tags:
+        - progress-controller
+      summary: Atualizar dados de progresso
+      description: Atualiza os dados de progresso do usuário
+      operationId: adminUpdateProgress
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProgressDataRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Dados de progresso atualizados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDataResponseDTO'
+        '400':
+          description: Dados de progresso inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Dados de progresso não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user/backup:
+    get:
+      tags:
+        - backup-controller
+      summary: Recuperar backup
+      description: Recupera o último backup do usuário
+      operationId: getBackup
+      responses:
+        '200':
+          description: Backup retornado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResponseDTO'
+        '404':
+          description: Backup não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - backup-controller
+      summary: Atualizar backup do usuário
+      description: Atualiza o backup do usuário com os dados fornecidos
+      operationId: updateBackup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Backup atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BackupResponseDTO'
+        '404':
+          description: Backup não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - backup-controller
+      summary: Excluir backup do usuário
+      description: Exclui o backup do usuário
+      operationId: deleteBackup
+      responses:
+        '204':
+          description: Backup excluído com sucesso
+        '404':
+          description: Backup não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/{id}:
+    get:
+      tags:
+        - group-task-controller
+      summary: Buscar tarefa em grupo por ID
+      description: Busca uma tarefa em grupo pelo seu ID
+      operationId: getGroupTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tarefa em grupo encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - group-task-controller
+      summary: Editar tarefa em grupo
+      description: Edita uma tarefa em grupo existente
+      operationId: editGroupTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupTaskCreateDTO'
+        required: true
+      responses:
+        '200':
+          description: Tarefa em grupo editada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskResponseDTO'
+        '400':
+          description: Dados de tarefa em grupo inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - group-task-controller
+      summary: Excluir tarefa em grupo
+      description: Exclui uma tarefa em grupo existente
+      operationId: deleteGroupTask
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Tarefa em grupo excluída com sucesso
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/{groupTaskId}/tasks/{subTaskId}:
+    put:
+      tags:
+        - group-subtask-controller
+      summary: Editar sub-tarefa de grupo
+      description: Edita uma sub-tarefa existente de uma tarefa em grupo.
+      operationId: editIndividualTask
+      parameters:
+        - name: groupTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: subTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupSubtaskCreateDTO'
+        required: true
+      responses:
+        '200':
+          description: Sub-tarefa editada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupSubtask'
+        '400':
+          description: Dados de sub-tarefa inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: >-
+            Acesso negado. Somente o autor e os editores podem editar
+            sub-tarefas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo ou sub-tarefa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - group-subtask-controller
+      summary: Excluir sub-tarefa de grupo
+      description: Exclui uma sub-tarefa de uma tarefa em grupo.
+      operationId: deleteSubTask
+      parameters:
+        - name: groupTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: subTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Sub-tarefa excluída com sucesso
+        '403':
+          description: >-
+            Acesso negado. Somente o autor e os editores podem excluir
+            sub-tarefas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo ou sub-tarefa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/invites/{inviteId}/reject:
+    put:
+      tags:
+        - group-task-invite-controller
+      summary: Rejeitar convite para tarefa em grupo
+      description: Rejeita um convite para participar de uma tarefa em grupo
+      operationId: rejectInvite
+      parameters:
+        - name: inviteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convite rejeitado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskInviteDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/invites/{inviteId}/accept:
+    put:
+      tags:
+        - group-task-invite-controller
+      summary: Aceitar convite para tarefa em grupo
+      description: Aceita um convite para participar de uma tarefa em grupo
+      operationId: acceptInvite
+      parameters:
+        - name: inviteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convite aceito com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskInviteDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite/refuse/{senderId}/{receiverId}:
+    put:
+      tags:
+        - friend-invite-controller
+      summary: Recusar convite de amizade
+      description: Recusa um convite de amizade recebido
+      operationId: refusedFriendInvite
+      parameters:
+        - name: senderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: receiverId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendInviteRequestDTO'
+        required: true
+      responses:
+        '204':
+          description: Convite de amizade recusado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado ou usuário incompatível com o convite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite de amizade não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product/{id}:
+    get:
+      tags:
+        - product-controller
+      summary: Buscar produto por ID
+      description: Busca um produto pelo seu ID
+      operationId: getProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Produto encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponseDTO'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+    put:
+      tags:
+        - product-controller
+      summary: Editar produto (ADMIN)
+      description: Edita um produto existente
+      operationId: editProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Produto editado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponseDTO'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - product-controller
+      summary: Excluir produto (ADMIN)
+      description: Exclui um produto existente
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Produto excluído com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    patch:
+      tags:
+        - product-controller
+      summary: Editar parcialmente produto (ADMIN)
+      description: Edita parcialmente um produto existente
+      operationId: partialUpdateProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Produto editado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/gemsPackage/{id}:
+    put:
+      tags:
+        - gems-controller
+      summary: Editar parcialmente pacote de gemas (ADMIN)
+      description: Edita parcialmente um pacote de gemas existente
+      operationId: editGemsPackage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GemsPackRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Pacote de gemas editado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsPackResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Pacote de gemas não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - gems-controller
+      summary: Excluir pacote de gemas (ADMIN)
+      description: Exclui um pacote de gemas existente
+      operationId: deleteGemsPackage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Pacote de gemas excluído com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Pacote de gemas não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    patch:
+      tags:
+        - gems-controller
+      summary: Editar parcialmente pacote de gemas (ADMIN)
+      description: Edita parcialmente um pacote de gemas existente
+      operationId: partialUpdateGemsPackage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GemsPackRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Pacote de gemas editado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsPackResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Pacote de gemas não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/category/{id}:
+    get:
+      tags:
+        - category-controller
+      summary: Buscar categoria por ID
+      description: Busca uma categoria pelo seu ID
+      operationId: getCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Categoria encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDTO'
+        '404':
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    put:
+      tags:
+        - category-controller
+      summary: Editar categoria (ADMIN)
+      description: Edita uma categoria existente
+      operationId: editCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Categoria editada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDTO'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - category-controller
+      summary: Excluir categoria (ADMIN)
+      description: Exclui uma categoria existente
+      operationId: deleteCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: Categoria excluída com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Categoria não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user/backup/create:
+    post:
+      tags:
+        - backup-controller
+      operationId: createUserBackup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BackupCreateDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/BackupResponseDTO'
+  /social/groupTasks:
+    get:
+      tags:
+        - group-task-controller
+      summary: Obter tarefas em grupo do usuário
+      description: >-
+        Retorna uma lista de todas as tarefas em grupo das quais o usuário
+        autenticado participa.
+      operationId: getMyGroupTasks
+      responses:
+        '200':
+          description: Tarefas em grupo encontradas com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupTaskResponseDTO'
+        '401':
+          description: Não autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno do servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - group-task-controller
+      summary: Criar tarefa em grupo
+      description: Cria uma nova tarefa em grupo
+      operationId: createGroupTask
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupTaskCreateDTO'
+        required: true
+      responses:
+        '201':
+          description: Tarefa em grupo criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskResponseDTO'
+        '400':
+          description: Dados de tarefa em grupo inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/{groupTaskId}/tasks:
+    post:
+      tags:
+        - group-subtask-controller
+      summary: Criar sub-tarefa de grupo
+      description: Cria uma nova sub-tarefa para uma tarefa em grupo.
+      operationId: createIndividualTask
+      parameters:
+        - name: groupTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupSubtaskCreateDTO'
+        required: true
+      responses:
+        '201':
+          description: Sub-tarefa criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupSubtask'
+        '400':
+          description: Dados de sub-tarefa inválidos
+          content:
+            application/json:
+              schema:
+                type: string
+        '403':
+          description: >-
+            Acesso negado. Somente o autor e os editores podem criar
+            sub-tarefas.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/invites/{groupTaskId}:
+    post:
+      tags:
+        - group-task-invite-controller
+      summary: Criar convites para tarefa em grupo
+      description: Cria convites para usuários participarem de uma tarefa em grupo
+      operationId: createInvites
+      parameters:
+        - name: groupTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupTaskInvitesDTO'
+        required: true
+      responses:
+        '200':
+          description: Convites criados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupTaskInviteDTO'
+        '400':
+          description: Dados de convite inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Tarefa em grupo não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite/{senderId}/{receiverUsername}:
+    post:
+      tags:
+        - friend-invite-controller
+      summary: Enviar convite de amizade
+      description: Envia um convite de amizade para outro usuário
+      operationId: sendFriendRequest
+      parameters:
+        - name: senderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: receiverUsername
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convite de amizade enviado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendInviteResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Usuário destinatário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '409':
+          description: Convite de amizade já existente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendException'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite/accept/{senderId}/{receiverId}:
+    post:
+      tags:
+        - friend-invite-controller
+      summary: Aceitar convite de amizade
+      description: Aceita um convite de amizade recebido
+      operationId: acceptFriendRequest
+      parameters:
+        - name: senderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: receiverId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convite de amizade aceito com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendshipDTO'
+        '403':
+          description: Acesso negado ou usuário incompatível com o convite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite de amizade não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '409':
+          description: Convite de amizade já foi rejeitado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendException'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/purchases/product/{userId}:
+    post:
+      tags:
+        - purchase-controller
+      summary: Comprar produto
+      description: Compra um produto utilizando moedas e gemas.
+      operationId: productPurchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartPurchaseRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: Compra de produto realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductTransactionDTO'
+        '400':
+          description: Dados de compra inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/purchases/gems/start:
+    post:
+      tags:
+        - purchase-controller
+      summary: Iniciar compra de gemas
+      description: Inicia uma compra de gemas, retornando o ID da transação
+      operationId: startGemsPurchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartPurchaseRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: Compra de gemas iniciada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsTransactionDTO'
+        '400':
+          description: Dados de compra inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '404':
+          description: Pacote de gemas não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/purchases/gems/complete:
+    post:
+      tags:
+        - purchase-controller
+      summary: Concluir compra de gemas
+      description: >-
+        Conclui uma compra de gemas, utilizando o ID da transação e o token de
+        pagamento
+      operationId: completeGemsPurchase
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletePurchaseRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: Compra de gemas concluída com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Dados de compra inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Transação de gemas não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '409':
+          description: Transação já finalizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product:
+    post:
+      tags:
+        - product-controller
+      summary: Criar produto (ADMIN)
+      description: Cria um novo produto na loja
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: Produto criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponseDTO'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product/{id}/category:
+    post:
+      tags:
+        - product-controller
+      summary: Atualizar categorias de um produto (ADMIN)
+      description: Atualiza as categorias de um produto existente
+      operationId: updateProductCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '204':
+          description: Categorias do produto atualizadas com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado ou Token invalido
+          content:
+            '*/*':
+              schema:
+                type: string
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    delete:
+      tags:
+        - product-controller
+      summary: Remover categorias de um produto (ADMIN)
+      description: Remove categorias de um produto existente
+      operationId: deleteProductCategory
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int32
+        required: true
+      responses:
+        '204':
+          description: Categorias do produto removidas com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json: {}
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/gemsPackage:
+    get:
+      tags:
+        - gems-controller
+      summary: Listar todos os pacotes de gemas (ADMIN)
+      description: Lista todos os pacotes de gemas disponíveis
+      operationId: getAllGemsPackage
+      responses:
+        '200':
+          description: Pacotes de gemas listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GemsPackResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - gems-controller
+      summary: Criar pacote de gemas (ADMIN)
+      description: Cria um novo pacote de gemas
+      operationId: createGemsPackage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GemsPackRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: Pacote de gemas criado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Dados de pacote de gemas inválidos
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/category:
+    get:
+      tags:
+        - category-controller
+      summary: Listar todas as categorias (ADMIN)
+      description: Lista todas as categorias de produtos
+      operationId: getAllCategory
+      responses:
+        '200':
+          description: Categorias listadas com sucesso
+          content:
+            application/json:
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+    post:
+      tags:
+        - category-controller
+      summary: Criar categoria (ADMIN)
+      description: Cria uma nova categoria para produtos
+      operationId: createCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequestDTO'
+        required: true
+      responses:
+        '201':
+          description: Categoria criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponseDTO'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /auth/register:
+    post:
+      tags:
+        - auth-controller
+      summary: Registra um novo usuário
+      description: Registra um novo usuário com os dados fornecidos
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateDTO'
+        required: true
+      responses:
+        '201':
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+        '400':
+          description: Dados de registro inválidos
+          content:
+            application/json:
+              schema:
+                type: string
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+  /auth/logout:
+    post:
+      tags:
+        - auth-controller
+      summary: Desloga um usuário
+      description: Torno o token de autenticação do usuário invalido
+      operationId: logout
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Logout realizado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Token de autenticação inválido ou revogado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /auth/login:
+    post:
+      tags:
+        - auth-controller
+      summary: Autenticação do usuário
+      description: Autentica um usuário com username/email e senha
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      responses:
+        '200':
+          description: Token de autenticação gerado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponseDTO'
+        '401':
+          description: Credenciais inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+  /auth/admin:
+    post:
+      tags:
+        - auth-controller
+      summary: Criar um novo usuário com perfil de administrador
+      description: >-
+        Um administrador consegue cria um novo usuário com perfil de
+        administrador
+      operationId: createAdmin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateDTO'
+        required: true
+      responses:
+        '201':
+          description: Usuário administrador criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+        '400':
+          description: Dados de registro inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/purchases/gems/cancel/{transactionId}:
+    patch:
+      tags:
+        - purchase-controller
+      summary: Cancelar compra de gemas
+      description: Cancela uma compra de gemas, utilizando o ID da transação
+      operationId: cancelGemsPurchase
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Compra de gemas cancelada com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Transação de gemas não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user:
+    get:
+      tags:
+        - user-controller
+      summary: Buscar meu usuário
+      description: Retorna os dados do usuário autenticado.
+      operationId: findMyUser
+      responses:
+        '200':
+          description: Usuário encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDTO'
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundException'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user/{userId}:
+    get:
+      tags:
+        - user-controller
+      summary: Obter nome de usuário por ID
+      description: Retorna o nome de usuário de um usuário específico com base em seu ID.
+      operationId: getUsernameById
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Nome de usuário encontrado com sucesso
+          content:
+            text/plain:
+              schema:
+                type: string
+        '404':
+          description: Usuário não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotFoundException'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /user/progress/latest:
+    get:
+      tags:
+        - progress-controller
+      summary: Últimos dados de progresso
+      description: Retorna os dados se forem mais recentes que os dados locais do usuário
+      operationId: moreRecentProgress
+      parameters:
+        - name: lastModified
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dados de progresso encontrados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProgressDataResponseDTO'
+        '304':
+          description: Progresso não modificado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectNotModifiedException'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Dados de progresso não encontrados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/search:
+    get:
+      tags:
+        - group-task-controller
+      summary: Buscar tarefas em grupo
+      description: >-
+        Retorna uma lista paginada de tarefas em grupo que correspondem aos
+        critérios de pesquisa.
+      operationId: searchGroupTasks
+      parameters:
+        - name: title
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: linesPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: createdAt
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ASC
+      responses:
+        '200':
+          description: Tarefas em grupo encontradas com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupTaskResponseDTO'
+        '401':
+          description: Não autorizado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/invites:
+    get:
+      tags:
+        - group-task-invite-controller
+      summary: Listar convites do usuário
+      description: >-
+        Lista os convites para tarefas em grupo recebidos pelo usuário
+        autenticado
+      operationId: getUserInvites
+      responses:
+        '200':
+          description: Convites listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupTaskInviteDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/groupTasks/invites/task/{groupTaskId}:
+    get:
+      tags:
+        - group-task-invite-controller
+      summary: Listar convites por tarefa em grupo
+      description: Lista todos os convites para uma tarefa em grupo específica.
+      operationId: getInvitesByGroupTask
+      parameters:
+        - name: groupTaskId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convites listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupTaskInviteDTO'
+        '404':
+          description: Tarefa não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends:
+    get:
+      tags:
+        - friendship-controller
+      summary: Listar amigos
+      description: Lista todos os amigos do usuário
+      operationId: getFriends
+      responses:
+        '200':
+          description: Amigos listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FriendshipDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/{friendshipId}/friend-data:
+    get:
+      tags:
+        - friendship-controller
+      summary: Obter dados do amigo
+      description: >-
+        Retorna o nome de usuário e o nível de um amigo em uma amizade
+        específica.
+      operationId: getFriendData
+      parameters:
+        - name: friendshipId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dados do amigo encontrados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendDataDTO'
+        '403':
+          description: Acesso negado. Usuário não é amigo do usuário solicitado.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Amizade ou amigo não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite:
+    get:
+      tags:
+        - friend-invite-controller
+      summary: Listar meus convites de amizade
+      description: >-
+        Lista todos os convites de amizade pendentes que o usuário recebeu ou
+        enviou
+      operationId: getMyFriendInvite
+      responses:
+        '200':
+          description: Convites de amizade listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FriendInviteResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite/{senderId}/{receiverId}:
+    get:
+      tags:
+        - friend-invite-controller
+      summary: Buscar convite de amizade
+      description: Busca um convite de amizade entre dois usuários
+      operationId: getFriendInvite
+      parameters:
+        - name: senderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: receiverId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Convite de amizade encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendInviteResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite de amizade não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product/purchased:
+    get:
+      tags:
+        - product-controller
+      summary: Listar produtos comprados
+      description: Lista todos os produtos comprados pelo usuário
+      operationId: getPurchasedProducts
+      responses:
+        '200':
+          description: Produtos comprados listados com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product/page:
+    get:
+      tags:
+        - product-controller
+      summary: Listar produtos por página
+      description: Lista produtos por página, com filtros opcionais de nome e categoria
+      operationId: findPage
+      parameters:
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ''
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: linesPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 5
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: name
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ASC
+      responses:
+        '200':
+          description: Produtos listados com sucesso
+          content:
+            application/json: {}
+        '400':
+          description: Parâmetros de paginação inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+  /shop/my-transactions:
+    get:
+      tags:
+        - transaction-controller
+      summary: Listar minhas transações
+      description: Lista todas as transações de compra do usuário
+      operationId: myTransactions
+      responses:
+        '200':
+          description: Transações listadas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponseDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/my-transactions/product/{id}:
+    get:
+      tags:
+        - transaction-controller
+      summary: Buscar transação de produto por ID
+      description: Busca uma transação de compra de produto pelo seu ID
+      operationId: getProductTransaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transação de produto encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductTransactionDTO'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Transação de produto não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/my-transactions/page:
+    get:
+      tags:
+        - transaction-controller
+      summary: Listar transações por página
+      description: >-
+        Lista transações de compra do usuário por página, com filtro opcional de
+        tipo
+      operationId: findPage_1
+      parameters:
+        - name: type
+          in: query
+          required: false
+          schema:
+            type: string
+            default: all
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: linesPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: purchaseDate
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ASC
+      responses:
+        '200':
+          description: Transações listadas com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponseDTO'
+        '400':
+          description: Parâmetros de paginação inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/my-transactions/gems/{id}:
+    get:
+      tags:
+        - transaction-controller
+      summary: Buscar transação de gemas por ID
+      description: Busca uma transação de compra de gemas pelo seu ID
+      operationId: getGemsTransaction
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transação de gemas encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsTransactionDTO'
+        '400':
+          description: ID de transação inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Transação de gemas não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/gemsPackage/{gemsPackageId}:
+    get:
+      tags:
+        - gems-controller
+      summary: Buscar pacote de gemas por ID
+      description: Busca um pacote de gemas pelo seu ID
+      operationId: getGemsPackage
+      parameters:
+        - name: gemsPackageId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Pacote de gemas encontrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsPackResponseDTO'
+        '404':
+          description: Pacote de gemas não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+  /shop/gemsPackage/page:
+    get:
+      tags:
+        - gems-controller
+      summary: Listar pacotes de gemas por página
+      description: Lista pacotes de gemas por página
+      operationId: findPage_2
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: linesPerPage
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            type: string
+            default: nameOfPackage
+        - name: direction
+          in: query
+          required: false
+          schema:
+            type: string
+            default: ASC
+      responses:
+        '200':
+          description: Pacotes de gemas listados com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GemsPackResponseDTO'
+        '400':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/StandardError'
+                  - $ref: '#/components/schemas/ValidationError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+  /social/friends/{friendshipId}:
+    delete:
+      tags:
+        - friendship-controller
+      summary: Excluir amizade
+      description: Exclui uma amizade existente
+      operationId: deleteFriendship
+      parameters:
+        - name: friendshipId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Amizade excluída com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Amizade não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /social/friends/invite/cancel/{senderId}/{receiverId}:
+    delete:
+      tags:
+        - friend-invite-controller
+      summary: Cancelar convite de amizade
+      description: Cancela um convite de amizade enviado
+      operationId: cancelFriendInvite
+      parameters:
+        - name: senderId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: receiverId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FriendInviteRequestDTO'
+        required: true
+      responses:
+        '204':
+          description: Convite de amizade cancelado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado ou usuário incompatível com o convite
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Convite de amizade não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+  /shop/product/{id}/desative:
+    delete:
+      tags:
+        - product-controller
+      summary: Desativar produto (ADMIN)
+      description: Desativa um produto existente
+      operationId: desativeProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Produto desativado com sucesso
+          content:
+            '*/*':
+              schema:
+                type: string
+        '403':
+          description: Acesso negado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+        '500':
+          description: Erro interno no servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StandardError'
+      security:
+        - bearerAuth: []
+components:
+  schemas:
+    ProgressDataRequestDTO:
+      type: object
+      properties:
+        coins:
+          minimum: 0
+          type: integer
+          format: int32
+        gems:
+          minimum: 0
+          type: integer
+          format: int32
+        level:
+          minimum: 0
+          type: integer
+          format: int32
+        xp:
+          minimum: 0
+          type: number
+          format: float
+        lastModified:
+          type: string
+          format: date-time
+    StandardError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          description: Código HTTP do erro
+          format: int32
+        error:
+          type: string
+          description: Nome do erro
+        message:
+          type: string
+          description: Mensagem de erro
+        path:
+          type: string
+          description: Caminho da requisição
+    ProgressDataResponseDTO:
+      type: object
+      properties:
+        progressId:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        level:
+          type: integer
+          format: int32
+        xp:
+          type: number
+          format: float
+        lastModified:
+          type: string
+          format: date-time
+    FieldMessage:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        message:
+          type: string
+    ValidationError:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          description: Código HTTP do erro
+          format: int32
+        error:
+          type: string
+          description: Nome do erro
+        message:
+          type: string
+          description: Mensagem de erro
+        path:
+          type: string
+          description: Caminho da requisição
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMessage'
+    AchievementDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        unlocked:
+          type: boolean
+    BackupRequestDTO:
+      type: object
+      properties:
+        checkIns:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckInDTO'
+        goals:
+          $ref: '#/components/schemas/GoalsDTO'
+        lastModified:
+          type: string
+          format: date-time
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AchievementDTO'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDTO'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDTO'
+        goalHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalHistoryDTO'
+    CheckInDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        countCheckInDays:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        year:
+          type: integer
+          format: int32
+        lastCheckInDate:
+          type: string
+          format: date-time
+    GoalHistoryDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        weekNumber:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        goalType:
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+        successes:
+          type: integer
+          format: int32
+        failures:
+          type: integer
+          format: int32
+    GoalsDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        dailyProductivity:
+          type: integer
+          format: int32
+        dailyProductivityProgress:
+          type: integer
+          format: int32
+        dailyWellBeing:
+          type: integer
+          format: int32
+        dailyWellBeingProgress:
+          type: integer
+          format: int32
+        weeklyProductivity:
+          type: integer
+          format: int32
+        weeklyProductivityProgress:
+          type: integer
+          format: int32
+        weeklyWellBeing:
+          type: integer
+          format: int32
+        weeklyWellBeingProgress:
+          type: integer
+          format: int32
+    SkillDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        xp:
+          type: number
+          format: float
+        level:
+          type: integer
+          format: int32
+        themes:
+          type: array
+          items:
+            type: string
+            enum:
+              - COLLABORATION
+              - LEARNING
+              - WELLNESS
+              - COMMUNICATION
+              - CREATIVITY
+              - HEALTH
+              - ORGANIZATION
+              - FINANCE
+              - HOUSEHOLD_TASKS
+              - HOBBIES
+              - OTHER
+    TaskDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        title:
+          type: string
+        description:
+          type: string
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDTO'
+    BackupResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        checkIns:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckInDTO'
+        goals:
+          $ref: '#/components/schemas/GoalsDTO'
+        lastModified:
+          type: string
+          format: date-time
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AchievementDTO'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskDTO'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDTO'
+        goalHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalHistoryDTO'
+    GroupSubtaskCreateDTO:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        title:
+          type: string
+        description:
+          type: string
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        skills:
+          type: array
+          items:
+            type: string
+        participants:
+          type: array
+          items:
+            type: string
+    GroupTaskCreateDTO:
+      required:
+        - editors
+        - title
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        editors:
+          type: array
+          items:
+            type: string
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        groupSubtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupSubtaskCreateDTO'
+    GroupSubtaskResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        skills:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        participants:
+          type: array
+          items:
+            type: string
+    GroupTaskResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        editors:
+          type: array
+          items:
+            type: string
+        participants:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        groupSubtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupSubtaskResponseDTO'
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        unlocked:
+          type: boolean
+        userBackup:
+          $ref: '#/components/schemas/Backup'
+    Backup:
+      type: object
+      properties:
+        id:
+          type: string
+        lastModified:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+        checkIns:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckIn'
+        goals:
+          $ref: '#/components/schemas/Goals'
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Achievement'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        goalHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalHistory'
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        products:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    CheckIn:
+      type: object
+      properties:
+        id:
+          type: string
+        countCheckInDays:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        year:
+          type: integer
+          format: int32
+        lastCheckInDate:
+          type: string
+          format: date-time
+        backup:
+          $ref: '#/components/schemas/Backup'
+    FriendInvite:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/FriendInvitePK'
+        requestDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - PENDING
+            - ACCEPTED
+            - REJECTED
+    FriendInvitePK:
+      type: object
+      properties:
+        senderUser:
+          $ref: '#/components/schemas/User'
+        receiverUser:
+          $ref: '#/components/schemas/User'
+    Friendship:
+      type: object
+      properties:
+        id:
+          type: string
+        users:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        friendshipDate:
+          type: string
+          format: date-time
+    GoalHistory:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        weekNumber:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        goalType:
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+        successes:
+          type: integer
+          format: int32
+        failures:
+          type: integer
+          format: int32
+        backup:
+          $ref: '#/components/schemas/Backup'
+    Goals:
+      type: object
+      properties:
+        id:
+          type: string
+        dailyProductivity:
+          type: integer
+          format: int32
+        dailyProductivityProgress:
+          type: integer
+          format: int32
+        dailyWellBeing:
+          type: integer
+          format: int32
+        dailyWellBeingProgress:
+          type: integer
+          format: int32
+        weeklyProductivity:
+          type: integer
+          format: int32
+        weeklyProductivityProgress:
+          type: integer
+          format: int32
+        weeklyWellBeing:
+          type: integer
+          format: int32
+        weeklyWellBeingProgress:
+          type: integer
+          format: int32
+        userBackup:
+          $ref: '#/components/schemas/Backup'
+    GroupSubtask:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        groupTask:
+          $ref: '#/components/schemas/GroupTask'
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        skills:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    GroupTask:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        author:
+          type: string
+        editors:
+          type: array
+          items:
+            type: string
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        createdAt:
+          type: string
+          format: date-time
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        groupSubtasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupSubtask'
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        icon:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        totalSales:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+        categories:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+    ProgressData:
+      type: object
+      properties:
+        id:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        level:
+          type: integer
+          format: int32
+        xp:
+          type: number
+          format: float
+        lastModified:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        xp:
+          type: number
+          format: float
+        level:
+          type: integer
+          format: int32
+        themes:
+          type: array
+          items:
+            type: string
+            enum:
+              - COLLABORATION
+              - LEARNING
+              - WELLNESS
+              - COMMUNICATION
+              - CREATIVITY
+              - HEALTH
+              - ORGANIZATION
+              - FINANCE
+              - HOUSEHOLD_TASKS
+              - HOBBIES
+              - OTHER
+        userBackup:
+          $ref: '#/components/schemas/Backup'
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        userBackup:
+          $ref: '#/components/schemas/Backup'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+        progressData:
+          $ref: '#/components/schemas/ProgressData'
+        backup:
+          $ref: '#/components/schemas/Backup'
+        purchasedProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        senderFriendRequests:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/FriendInvite'
+        receivedFriendRequests:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/FriendInvite'
+        friendships:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Friendship'
+        groupTasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupTask'
+    GroupTaskInviteDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        groupTaskId:
+          type: string
+        userId:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - ACCEPTED
+            - REJECTED
+        createdAt:
+          type: string
+          format: date-time
+    FriendInviteRequestDTO:
+      required:
+        - userId
+      type: object
+      properties:
+        userId:
+          type: string
+    ProductRequestDTO:
+      required:
+        - categoriesId
+        - description
+        - icon
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        categoriesId:
+          type: array
+          items:
+            type: integer
+            format: int32
+        icon:
+          type: string
+        coins:
+          minimum: 0
+          type: integer
+          format: int32
+        gems:
+          minimum: 0
+          type: integer
+          format: int32
+        active:
+          type: boolean
+    CategoryResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        totalProductCount:
+          type: integer
+          format: int32
+    ProductResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/CategoryResponseDTO'
+        icon:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        totalSales:
+          type: integer
+          format: int32
+    GemsPackRequestDTO:
+      required:
+        - gems
+        - icon
+        - money
+        - nameOfPackage
+      type: object
+      properties:
+        nameOfPackage:
+          type: string
+        icon:
+          type: string
+        gems:
+          type: integer
+          format: int32
+        money:
+          minimum: 0
+          exclusiveMinimum: true
+          type: number
+        discountPercentage:
+          type: number
+          format: float
+    GemsPackResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nameOfPackage:
+          type: string
+        icon:
+          type: string
+        gems:
+          type: integer
+          format: int32
+        money:
+          type: number
+        discountPercentage:
+          type: number
+          format: float
+        totalPrice:
+          type: number
+    CategoryRequestDTO:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+    AchievementCreateDTO:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        unlocked:
+          type: boolean
+    BackupCreateDTO:
+      type: object
+      properties:
+        checkIns:
+          type: array
+          items:
+            $ref: '#/components/schemas/CheckInCreateDTO'
+        goals:
+          $ref: '#/components/schemas/GoalsCreateDTO'
+        lastModified:
+          type: string
+          format: date-time
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/AchievementCreateDTO'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaskCreateDTO'
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillCreateDTO'
+        goalHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/GoalHistoryCreateDTO'
+    CheckInCreateDTO:
+      type: object
+      properties:
+        countCheckInDays:
+          type: integer
+          format: int32
+        month:
+          type: integer
+          format: int32
+        year:
+          type: integer
+          format: int32
+        lastCheckInDate:
+          type: string
+          format: date-time
+    GoalHistoryCreateDTO:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        weekNumber:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        goalType:
+          type: string
+          enum:
+            - DAILY
+            - WEEKLY
+        successes:
+          type: integer
+          format: int32
+        failures:
+          type: integer
+          format: int32
+    GoalsCreateDTO:
+      type: object
+      properties:
+        dailyProductivity:
+          type: integer
+          format: int32
+        weeklyProductivity:
+          type: integer
+          format: int32
+        dailyProductivityProgress:
+          type: integer
+          format: int32
+        weeklyProductivityProgress:
+          type: integer
+          format: int32
+        dailyWellBeing:
+          type: integer
+          format: int32
+        weeklyWellBeing:
+          type: integer
+          format: int32
+        dailyWellBeingProgress:
+          type: integer
+          format: int32
+        weeklyWellBeingProgress:
+          type: integer
+          format: int32
+    SkillCreateDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        xp:
+          type: number
+          format: float
+        level:
+          type: integer
+          format: int32
+        themes:
+          type: array
+          items:
+            type: string
+            enum:
+              - COLLABORATION
+              - LEARNING
+              - WELLNESS
+              - COMMUNICATION
+              - CREATIVITY
+              - HEALTH
+              - ORGANIZATION
+              - FINANCE
+              - HOUSEHOLD_TASKS
+              - HOBBIES
+              - OTHER
+    TaskCreateDTO:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - IN_PROGRESS
+            - COMPLETED
+            - FAILED
+        title:
+          type: string
+        description:
+          type: string
+        xp:
+          type: integer
+          format: int32
+        coins:
+          type: integer
+          format: int32
+        type:
+          type: string
+          enum:
+            - WELL_BEING
+            - PRODUCTIVITY
+        repetition:
+          type: integer
+          format: int32
+        reminder:
+          type: string
+          format: date-time
+        skillIncrease:
+          type: integer
+          format: int32
+        skillDecrease:
+          type: integer
+          format: int32
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        theme:
+          type: string
+          enum:
+            - COLLABORATION
+            - LEARNING
+            - WELLNESS
+            - COMMUNICATION
+            - CREATIVITY
+            - HEALTH
+            - ORGANIZATION
+            - FINANCE
+            - HOUSEHOLD_TASKS
+            - HOBBIES
+            - OTHER
+        difficulty:
+          type: string
+          enum:
+            - EASY
+            - MEDIUM
+            - HARD
+            - VERY_HARD
+        finish:
+          type: boolean
+        dateFinish:
+          type: string
+          format: date-time
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillCreateDTO'
+    GroupTaskInvitesDTO:
+      required:
+        - usernames
+      type: object
+      properties:
+        usernames:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    FriendInviteResponseDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        friendUserId:
+          type: string
+    FriendException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    FriendshipDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDTO'
+        friendshipDate:
+          type: string
+          format: date-time
+    UserDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        level:
+          type: integer
+          format: int32
+        username:
+          type: string
+    StartPurchaseRequestDTO:
+      required:
+        - productOrGemsId
+      type: object
+      properties:
+        productOrGemsId:
+          type: integer
+          format: int64
+    ProductTransactionDTO:
+      type: object
+      properties:
+        id:
+          type: string
+        coins:
+          type: integer
+          format: int32
+        gems:
+          type: integer
+          format: int32
+        purchaseDate:
+          type: string
+          format: date-time
+        errorMessage:
+          type: string
+        productId:
+          type: integer
+          format: int64
+    GemsTransactionDTO:
+      required:
+        - purchaseDate
+        - status
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - PENDING
+            - APPROVED
+            - DECLINED
+            - CANCELLED
+            - ERROR
+        price:
+          type: number
+        purchaseDate:
+          type: string
+          format: date-time
+        errorMessage:
+          type: string
+    CompletePurchaseRequestDTO:
+      required:
+        - gemsTransactionId
+        - paymentToken
+      type: object
+      properties:
+        gemsTransactionId:
+          type: string
+        paymentToken:
+          type: number
+    UserCreateDTO:
+      required:
+        - email
+        - name
+        - password
+        - username
+      type: object
+      properties:
+        name:
+          type: string
+        username:
+          maxLength: 16
+          minLength: 6
+          type: string
+        email:
+          type: string
+        password:
+          maxLength: 40
+          minLength: 6
+          type: string
+    UserCreateResponse:
+      type: object
+      properties:
+        userId:
+          type: string
+        progressId:
+          type: string
+        name:
+          type: string
+    LoginDTO:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    LoginResponseDTO:
+      type: object
+      properties:
+        token:
+          type: string
+    UserResponseDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+        progressId:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - USER
+    ObjectNotFoundException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    ObjectNotModifiedException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  className:
+                    type: string
+                  nativeMethod:
+                    type: boolean
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              className:
+                type: string
+              nativeMethod:
+                type: boolean
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    className:
+                      type: string
+                    nativeMethod:
+                      type: boolean
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    FriendDataDTO:
+      type: object
+      properties:
+        username:
+          type: string
+        level:
+          type: integer
+          format: int32
+    TransactionResponseDTO:
+      type: object
+      properties:
+        gemsTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GemsTransactionDTO'
+        productsTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTransactionDTO'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      name: bearerAuth
+      scheme: bearer
+      bearerFormat: JWT
